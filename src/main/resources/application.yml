@@ -2,5 +2,17 @@ server:
   port: 8089
 
 spring:
+  config:
+    import: optional:file:.env[.properties]
   application:
     name: movie_review
+
+  #  DB
+  datasource:
+    url: jdbc:h2:./db/test;AUTO_SERVER=TRUE
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.h2.Driver
+  sql:
+    init:
+      mode: always

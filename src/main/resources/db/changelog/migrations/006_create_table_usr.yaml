@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: 006
+      author: Aleksei Podstavin
+      changes:
+        - createTable:
+            tableName: usr
+            columns:
+              - column:
+                  name: email
+                  type: varchar(50)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    unique: true
+              - column:
+                  name: username
+                  type: varchar(100)
+              - column:
+                  name: password
+                  type: varchar(100)
+                  constraints:
+                    nullable: false

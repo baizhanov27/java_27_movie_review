@@ -1,5 +1,7 @@
 package kg.attractor.movie_review.controller;
 
+import kg.attractor.movie_review.dto.MovieImageDto;
+import kg.attractor.movie_review.exception.MovieImageNotFoundException;
 import kg.attractor.movie_review.service.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -9,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("images")
@@ -19,13 +20,13 @@ public class ImageController {
     private final FileService fileService;
 
     @PostMapping
-    public HttpStatus upload(MultipartFile file) {
-        fileService.upload(file);
+    public HttpStatus upload(MovieImageDto dto) {
+        fileService.upload(dto);
         return HttpStatus.OK;
     }
 
-    @GetMapping("{filename}")
-    public ResponseEntity<?> download(@PathVariable String filename) {
-        return fileService.download(filename);
+    @GetMapping("{movieId}")
+    public ResponseEntity<?> download(@PathVariable Long movieId) throws MovieImageNotFoundException {
+        return fileService.download(movieId);
     }
 }

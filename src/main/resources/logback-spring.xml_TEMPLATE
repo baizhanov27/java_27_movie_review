@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+<!--    &lt;!&ndash; Паттерн вывода &ndash;&gt;-->
+<!--    <property name="LOG_PATTERN"-->
+<!--              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>-->
+
+<!--    &lt;!&ndash; Консольный appender &ndash;&gt;-->
+<!--    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">-->
+<!--        <encoder>-->
+<!--            <pattern>${LOG_PATTERN}</pattern>-->
+<!--        </encoder>-->
+<!--    </appender>-->
+
+    <!-- ===== Подавление логов сторонних библиотек ===== -->
+
+    <!-- Spring Framework -->
+    <logger name="org.springframework" level="WARN"/>
+    <logger name="org.springframework.web" level="WARN"/>
+    <logger name="org.springframework.security" level="WARN"/>
+    <logger name="org.springframework.boot.autoconfigure" level="WARN"/>
+    <logger name="org.springframework.data" level="WARN"/>
+
+    <!-- Hibernate / JPA -->
+    <logger name="org.hibernate" level="WARN"/>
+    <logger name="org.hibernate.SQL" level="WARN"/>
+    <logger name="org.hibernate.type.descriptor.sql" level="WARN"/>
+
+    <!-- Apache / Tomcat -->
+    <logger name="org.apache" level="WARN"/>
+    <logger name="org.apache.catalina" level="WARN"/>
+    <logger name="org.apache.tomcat" level="WARN"/>
+
+    <!-- HikariCP (пул соединений) -->
+    <logger name="com.zaxxer.hikari" level="WARN"/>
+
+    <!-- Liquibase / Flyway -->
+    <logger name="liquibase" level="WARN"/>
+    <logger name="org.flywaydb" level="WARN"/>
+
+    <!-- Netty (для реактивных приложений) -->
+    <logger name="io.netty" level="WARN"/>
+
+    <!-- Kafka -->
+    <logger name="org.apache.kafka" level="WARN"/>
+
+    <!-- AWS SDK -->
+    <logger name="software.amazon.awssdk" level="WARN"/>
+    <logger name="com.amazonaws" level="WARN"/>
+
+    <!-- HTTP клиенты -->
+    <logger name="org.apache.http" level="WARN"/>
+    <logger name="feign" level="WARN"/>
+
+    <!-- ===== Ваше приложение — оставляем DEBUG/INFO ===== -->
+<!--    <logger name="k.a.movie_review" level="WARN"/>-->
+
+    <!-- Root — по умолчанию для всего остального -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</configuration>

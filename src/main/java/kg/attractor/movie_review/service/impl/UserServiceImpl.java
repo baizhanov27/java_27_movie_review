@@ -2,12 +2,14 @@ package kg.attractor.movie_review.service.impl;
 
 import kg.attractor.movie_review.dao.UserDao;
 import kg.attractor.movie_review.dto.UserDto;
-import kg.attractor.movie_review.exception.UserNotFoundException;
+import kg.attractor.movie_review.exception.NotFoundEntryException;
+import kg.attractor.movie_review.exception.UserDataCreateException;
 import kg.attractor.movie_review.model.User;
 import kg.attractor.movie_review.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +27,7 @@ public class UserServiceImpl implements UserService {
 
         users.forEach(e -> {
             UserDto user = UserDto.builder()
-                    .id(e.getId())
+                    .email(e.getEmail())
                     .username(e.getUsername())
                     .password(e.getPassword())
                     .build();
@@ -36,23 +38,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto findById(int id) throws UserNotFoundException {
-        User user = userDao.findByIdNamed(id)
-                .orElseThrow(UserNotFoundException::new);
+    public UserDto findByEmail(String email) throws NotFoundEntryException {
+        User user = userDao.findByEmailNamed(email)
+                .orElseThrow(() -> new NotFoundEntryException("User not found"));
 
         return UserDto.builder()
-                .id(user.getId())
+                .email(user.getEmail())
                 .username(user.getUsername())
                 .password(user.getPassword())
                 .build();
     }
 
     @Override
-    public Integer create(UserDto userDto) {
-        User user = new User();
-        user.setUsername(userDto.getUsername());
-        user.setPassword(userDto.getPassword());
+    public void create(UserDto userDto) throws UserDataCreateException {
+        try {
+            User user = new User();
+            user.setEmail(userDto.getEmail());
+            user.setUsername(userDto.getUsername());
+            user.setPassword(userDto.getPassword());
 
-        return userDao.create(user);
+            userDao.create(user);
+        } catch (SQLException e) {
+            throw new UserDataCreateException();
+        }
     }
 }

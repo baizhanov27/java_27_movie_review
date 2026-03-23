@@ -11,10 +11,8 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
-import java.sql.PreparedStatement;
-import java.sql.Statement;
+import java.sql.SQLException;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Component
@@ -40,32 +38,25 @@ public class UserDao {
         );
     }
 
-    public Optional<User> findByIdNamed(int id) {
-        String sql = "select * from usr where id = :id";
+    public Optional<User> findByEmailNamed(String email) {
+        String sql = "select * from usr where email = :email";
 
         return Optional.ofNullable(
                 DataAccessUtils.singleResult(
                         namedParameterJdbcTemplate.query(
                                 sql,
                                 new MapSqlParameterSource()
-                                        .addValue("id", id),
+                                        .addValue("email", email),
                                 new UserMapper()
                         )
                 )
         );
     }
 
-    public Integer create(User user) {
-        String sql = "insert into usr(name, password) " +
-                "values(?,?)";
+    public void create(User user) throws SQLException {
+        String sql = "insert into usr(email, username, password) " +
+                "values(?,?,?)";
 
-        jdbcTemplate.update(con -> {
-            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, user.getUsername());
-            ps.setString(2, user.getPassword());
-            return ps;
-        }, keyHolder);
-
-        return Objects.requireNonNull(keyHolder.getKey()).intValue();
+        jdbcTemplate.update(sql, user.getEmail(), user.getUsername(), user.getPassword());
     }
 }

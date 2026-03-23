@@ -1,7 +1,9 @@
 package kg.attractor.movie_review.controller;
 
+import jakarta.validation.Valid;
 import kg.attractor.movie_review.dto.UserDto;
-import kg.attractor.movie_review.exception.UserNotFoundException;
+import kg.attractor.movie_review.exception.NotFoundEntryException;
+import kg.attractor.movie_review.exception.UserDataCreateException;
 import kg.attractor.movie_review.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,13 +26,13 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @GetMapping("{id}")
-    public UserDto findById(@PathVariable int id) throws UserNotFoundException {
-        return userService.findById(id);
+    @GetMapping("{email}")
+    public UserDto findById(@PathVariable String email) throws NotFoundEntryException {
+        return userService.findByEmail(email);
     }
 
     @PostMapping
-    public Integer create(UserDto userDto) {
-        return userService.create(userDto);
+    public void create(@Valid UserDto userDto) throws UserDataCreateException {
+        userService.create(userDto);
     }
 }

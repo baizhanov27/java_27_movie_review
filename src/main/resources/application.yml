@@ -23,10 +23,10 @@ logging:
   file:
     path: logs
   level:
-    root: info
     kg.attractor.movie_review: debug
     com.zaxxer.hikari: error
     org.apache.tomcat: error
     liquibase: error
+    root: info
   pattern:
     file: "%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n"

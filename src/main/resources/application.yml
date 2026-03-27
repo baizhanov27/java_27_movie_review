@@ -23,6 +23,9 @@ logging:
   file:
     path: logs
   level:
+    org:
+      springframework:
+        security: debug
     kg.attractor.movie_review: debug
     com.zaxxer.hikari: error
     org.apache.tomcat: error

@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: 011
+      author: Aleksei Podstavin
+      changes:
+        - addColumn:
+            tableName: usr
+            columns:
+              - column:
+                  name: enabled
+                  type: boolean
+                  constraints:
+                    nullable: false
+                  defaultValueBoolean: true

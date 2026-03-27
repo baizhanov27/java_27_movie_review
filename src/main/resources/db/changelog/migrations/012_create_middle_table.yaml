@@ -1,0 +1,48 @@
+databaseChangeLog:
+  - changeSet:
+      id: 012
+      author: Aleksei Podstavin
+      changes:
+        - createTable:
+            tableName: role_auth
+            columns:
+              - column:
+                  name: role_id
+                  type: long
+                  constraints:
+                    foreignKeyName: fk_role_auth
+                    nullable: false
+                    references: roles(id)
+              - column:
+                  name: auth_id
+                  type: long
+                  constraints:
+                    foreignKeyName: fk_auth_role
+                    nullable: false
+                    references: authorities(id)
+        - addPrimaryKey:
+            tableName: role_auth
+            columnNames: role_id, auth_id
+            constraintName: pk_role_auth
+
+        - createTable:
+            tableName: user_role
+            columns:
+              - column:
+                  name: usr_email
+                  type: varchar(50)
+                  constraints:
+                    foreignKeyName: fk_usr_role
+                    nullable: false
+                    references: usr(email)
+              - column:
+                  name: role_id
+                  type: long
+                  constraints:
+                    foreignKeyName: fk_role_usr
+                    nullable: false
+                    references: roles(id)
+        - addPrimaryKey:
+            tableName: user_role
+            columnNames: usr_email, role_id
+            constraintName: pk_user_role

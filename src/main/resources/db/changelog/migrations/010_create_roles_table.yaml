@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: 010
+      author: Aleksei Podstavin
+      changes:
+        - createTable:
+            tableName: roles
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: role
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+                  defaultValue: "USER"

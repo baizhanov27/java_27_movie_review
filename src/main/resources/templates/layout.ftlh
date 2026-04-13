@@ -1,3 +1,4 @@
+<#import "spring.ftl" as spring>
 <#macro layout>
 
     <!doctype html>
@@ -40,11 +41,15 @@
                     </li>
                 </ul>
             </div>
+            <a href="/auth/login"
+               class="btn alert-success m-2">Login</a>
+            <a href="/auth/register"
+               class="btn alert-info m-2">Register</a>
         </div>
     </nav>
 
     <div class="container">
-        <#nested>
+        <#nested spring>
     </div>
 
     </body>

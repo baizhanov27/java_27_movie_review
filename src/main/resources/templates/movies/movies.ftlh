@@ -9,7 +9,7 @@
                     <h5 class="card-title">${movie.title}</h5>
                     <p class="card-text">${movie.director}</p>
                     <p class="card-footer">${movie.releaseYear}</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                    <a href="movies/${movie.id}" class="btn btn-primary">Go somewhere</a>
                 </div>
             </div>
         </#list>

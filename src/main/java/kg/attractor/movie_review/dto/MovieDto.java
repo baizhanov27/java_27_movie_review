@@ -10,10 +10,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MovieDto {
+    private long id;
     private int releaseYear;
     private String title;
     private String description;
     private String director;
+    private String imageName;
 
     @Override
     public String toString() {

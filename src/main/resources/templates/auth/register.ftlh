@@ -36,13 +36,11 @@
 
                                 <form action="/auth/register" method="post">
                                     <!-- CSRF -->
-                                    <#--                                    <#if _csrf??>-->
-                                    <#--                                        <input-->
-                                    <#--                                                type="hidden"-->
-                                    <#--                                                name="${(_csrf.parameterName)!'csrf-param-name'}"-->
-                                    <#--                                                value="${(_csrf.token)!'csrf-token'}"-->
-                                    <#--                                        >-->
-                                    <#--                                    </#if>-->
+                                    <#if _csrf??>
+                                        <input type="hidden"
+                                               name="${(_csrf.parameterName)!'csrf-param-name'}"
+                                               value="${(_csrf.token)!'csrf-token'}">
+                                    </#if>
 
 
                                     <#--                                    <div data-mdb-input-init class="form-outline mb-4">-->

@@ -27,6 +27,19 @@ spring:
   liquibase:
     change-log: classpath:/db/changelog/master.yaml
 
+  #  Email
+  mail:
+    host: smtp.gmail.com
+    username: ${SMTP_USERNAME}
+    password: ${SMTP_PWD}
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 logging:
   file:
     path: logs

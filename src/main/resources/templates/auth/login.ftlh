@@ -50,7 +50,7 @@
                             </button>
 
                         </form>
-
+                        <a href="/auth/forgot-password">Forgot password?</a>
                     </div>
                 </div>
             </div>

@@ -24,6 +24,7 @@ public class User implements UserDetails {
     private String username;
     private String password;
     private Boolean enabled;
+    private String resetPasswordToken;
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "users")
     private List<Role> roles;

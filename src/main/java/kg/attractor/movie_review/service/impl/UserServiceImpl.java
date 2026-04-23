@@ -1,5 +1,8 @@
 package kg.attractor.movie_review.service.impl;
 
+import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpServletRequest;
+import kg.attractor.movie_review.common.UrlBuilder;
 import kg.attractor.movie_review.dao.UserDao;
 import kg.attractor.movie_review.dto.UserDto;
 import kg.attractor.movie_review.exception.NotFoundEntryException;
@@ -9,18 +12,22 @@ import kg.attractor.movie_review.model.Authority;
 import kg.attractor.movie_review.model.Role;
 import kg.attractor.movie_review.model.User;
 import kg.attractor.movie_review.repository.UserRepository;
+import kg.attractor.movie_review.service.EmailService;
 import kg.attractor.movie_review.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +35,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
     private final UserRepository userRepository;
+    private final PasswordEncoder encoder;
+    private final EmailService emailService;
 
     @Override
     public List<UserDto> getAllUsers() {
@@ -110,4 +119,34 @@ public class UserServiceImpl implements UserService {
         return privileges;
     }
 
+    private void updateResetPasswordToken(String token, String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(UserNotFoundException::new);
+        user.setResetPasswordToken(token);
+        userRepository.saveAndFlush(user);
+    }
+
+    @Override
+    public User getByResetPasswordToken(String token) {
+        return userRepository.findByResetPasswordToken(token)
+                .orElseThrow(UserNotFoundException::new);
+    }
+
+    @Override
+    public void updatePassword(User user, String newPasswd) {
+        String encodedPwd = encoder.encode(newPasswd);
+        user.setPassword(encodedPwd);
+        user.setResetPasswordToken(null);
+        userRepository.saveAndFlush(user);
+    }
+
+    @Override
+    public void makeResetPwdLink(HttpServletRequest request) throws UserNotFoundException, MessagingException, UnsupportedEncodingException {
+        String email = request.getParameter("email");
+        String token = UUID.randomUUID().toString();
+        updateResetPasswordToken(token, email);
+
+        String resetPwdLink = UrlBuilder.getSiteUrl(request) + "/auth/reset-password?token=" + token;
+        emailService.send(email, resetPwdLink);
+    }
 }

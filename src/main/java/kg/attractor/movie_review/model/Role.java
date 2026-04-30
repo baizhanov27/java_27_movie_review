@@ -26,7 +26,7 @@ public class Role {
     )
     private List<Authority> authorities;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_role",
             joinColumns = {@JoinColumn(name = "role_id")},
